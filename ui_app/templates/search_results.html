@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Результаты поиска{% endblock %}
+{% block content %}
+<h2>Результаты поиска для "{{ query }}":</h2>
+
+{% if results %}
+    <div class="row">
+        {% for book in results %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <a href="{% url 'book_detail' book.pk %}" style="text-decoration: none; color: inherit;">
+                        {% if book.cover %}
+                            <img src="{{ book.cover.url }}" class="card-img-top" alt="{{ book.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            <p class="card-text"><strong>Автор:</strong> {{ book.author }}</p>
+                            <p class="card-text">{{ book.description|truncatewords:20 }}</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Ничего не найдено.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Книжный Чат{% endblock %}
+
+{% block content %}
+    <!-- Контент страницы -->
+    <h2>📚 AI Книжный Чат</h2>
+    <div id="chat-box" class="mb-3"></div>
+    <input
+            type="text"
+            id="userInput"
+            class="form-control mb-2 text-white"
+    >
+    <button class="btn btn-primary" onclick="sendMessage()">Отправить</button>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById("userInput");
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<div><strong>Вы:</strong> ${message}</div>`;
+            input.value = "";
+
+            fetch("/chatbot/chat/", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({message})
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.response) {
+                        chatBox.innerHTML += `<div><strong>Бот:</strong> ${data.response}</div>`;
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }
+                });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Список книг</h2>
+
+    <!-- Книги -->
+    <div class="row">
+        {% for book in books %}
+        <div class="col-md-4">
+            <div class="card mb-3">
+                {% if book.cover %}
+                <!-- Задаем фиксированные размеры для изображения -->
+                <img src="{{ book.cover.url }}" class="card-img-top" alt="{{ book.title }}" style="width: 100%; height: 600px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text"><strong>Автор:</strong> {{ book.author }}</p>
+                    <p class="card-text">{{ book.description|truncatewords:15 }}</p>
+                    <!-- Кнопка для открытия книги -->
+                    <a href="{% url 'book_detail' book.id %}" class="btn btn-info">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Форма добавления книги (только для менеджеров) -->
+    {% if is_manager %}
+    <a href="{% url 'add_book' %}" class="btn btn-primary">Добавить книгу</a>
+    {% endif %}
+</div>
+{% endblock %}

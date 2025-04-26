@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ book.title }}</h2>
+    <p><strong>Автор:</strong> {{ book.author }}</p>
+    <p><strong>Описание:</strong> {{ book.description }}</p>
+
+    <div class="d-flex align-items-start">
+        <div class="text-content">
+            <!-- Здесь будет основной текст (если нужно, его можно дополнительно стилизовать) -->
+        </div>
+
+        {% if book.cover %}
+        <!-- Обложка будет располагаться справа -->
+        <img src="{{ book.cover.url }}" alt="{{ book.title }}" style="width: 250px; height: 400px; object-fit: cover; margin-left: 20px;">
+        {% endif %}
+    </div>
+
+    <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Назад</a>
+</div>
+{% endblock %}
